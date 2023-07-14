@@ -28,7 +28,7 @@
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                    <a href="/dashboard" class="nav-link {{ active_sidebar(['dashboard']) }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -37,7 +37,8 @@
 
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('banner.index')}}" class="nav-link">
+                    <a href="{{ route('banner.index') }}"
+                        class="nav-link {{ active_sidebar([route('banner.index')]) }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Banner
@@ -45,7 +46,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{{ route('brands.index') }}"
+                        class="nav-link {{ active_sidebar([route('brands.index')]) }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Brand
@@ -53,7 +55,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{{ route('partners.index') }}"
+                        class="nav-link {{ active_sidebar([route('partners.index')]) }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Partner
@@ -61,7 +64,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{{ route('ads.index') }}" class="nav-link {{ active_sidebar([route('ads.index')]) }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Ads
@@ -69,7 +72,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{{ route('categories.index') }}"
+                        class="nav-link {{ active_sidebar([route('categories.index'), route('searchCategory')]) }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Category
@@ -77,7 +81,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{{ route('sub-categories.index') }}"
+                        class="nav-link {{ active_sidebar([route('sub-categories.index'), route('searchSubCategories')]) }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Sub Category

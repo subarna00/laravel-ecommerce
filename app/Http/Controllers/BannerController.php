@@ -14,29 +14,9 @@ class BannerController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            $banner = Banner::latest()->get();
-            return datatables()->of($banner)
-                ->addColumn('action', function ($banner) {
-                    return view('components.tableButton', [
-                        'edit' => ["route" => "banner.edit", "id" => $banner->id],
-                        'delete' => ["route" => "banner.destroy", "id" => $banner->id],
-                    ]);
-                })
-                ->addColumn('image', function ($user) {
-                    return '<img src="/images/' . $user->image . '" style="height:50px;width:100%">';
-                })
-                ->addColumn("checkbox", function ($row) {
-                    return '<input type="checkbox" name="per_checkbox" data-id="' . $row->id . '"> <label></label>';
-                })
-                ->addColumn("created_at", function ($row) {
-                    return $row->created_at =  $row->created_at->diffForHumans();
-                })
-                ->rawColumns(['action', 'checkbox', "image"])
-                ->addIndexColumn()
-                ->make(true);
-        }
-        return view('backend.banner.index');
+        $banners = Banner::latest()->paginate(20);
+
+        return view('backend.banner.index', compact("banners"));
     }
 
     /**
@@ -52,23 +32,18 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'image' => 'sometimes|mimes:png,jpg,jpeg,wep,gif',
+        $data = $request->validate([
+            'image' => 'required|mimes:png,jpg,jpeg,wep,gif',
             'title' => 'required',
-            'description' => 'required',
+            'description' => 'sometimes',
             'status' => 'required',
         ]);
-        $data =  new Banner();
         if (isset($request->image)) {
-            $data->image = save_image($request->image);
+            $data["image"] = save_image($request->image);
         }
-        $data->title = $request->title;
-        $data->slug = Str::slug($request->title);
-        $data->description = $request->description;
-        $data->link = $request->link;
-        $data->status = $request->status;
+        $data["slug"] = Str::slug($data["title"]);
+        Banner::create($data);
         notify()->success("Banners Created Successfully");
-        $data-> save();
         return redirect()->route('banner.index');
     }
 
@@ -84,9 +59,9 @@ class BannerController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {   
+    {
         $banner = Banner::find($id);
-        return view('backend.banner.edit',compact('banner'));
+        return view('backend.banner.edit', compact('banner'));
     }
 
     /**
@@ -94,24 +69,23 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $data =  $request->validate([
             'image' => 'sometimes',
             'title' => 'required',
-            'description' => 'required',
+            'description' => 'sometimes',
             'status' => 'required',
         ]);
         DB::beginTransaction();
         try {
-            $data = Banner::find($id);
+            $find = Banner::find($id);
             if (isset($request->image)) {
-                $data->image = save_image($request->image);
+                $data["image"] = save_image($request->image);
+                if ($data["image"]) {
+                    delete_image("images/$find->image");
+                }
             }
-            $data->title = $request->title;
-            $data->slug = Str::slug($request->title);
-            $data->description = $request->description;
-            $data->link = $request->link;
-            $data->status = $request->status;
-            $data->update();
+            $data["slug"] = Str::slug($data["title"]);
+            $find->update($data);
             DB::commit();
             notify()->success("Banner Updated Successfully");
         } catch (\Throwable $th) {
@@ -128,15 +102,28 @@ class BannerController extends Controller
     {
         $data = Banner::find($id);
         $data->delete();
+        if ($data["image"]) {
+            delete_image("images/$data->image");
+        }
         notify()->success("Banner Deleted Successfully");
         return redirect()->back();
     }
 
-    
+
     public function deleteSelected(Request $request)
     {
         $ids = $request->ids;
         Banner::whereIn('id', $ids)->delete();
         return response()->json(["code" => 1, "msg" => "Banners have been deleted."]);
+    }
+    public function searchBanner(Request $request)
+    {
+        $data = $request->validate([
+            "search" => "required|string"
+        ]);
+        $search = $data["search"];
+        $banners = Banner::where("title", "LIKE", "%{$search}%")->latest()->paginate(20);
+
+        return view("backend.banner.index", compact("banners"));
     }
 }

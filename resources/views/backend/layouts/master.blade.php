@@ -5,6 +5,26 @@
     @include('backend.layouts.header')
 </head>
 
+<style>
+    .btn-primary {
+        background-color: #007bff !important;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d !important;
+
+    }
+
+    .btn-danger {
+        background-color: #dc3545 !important;
+    }
+
+    .notify {
+        z-index: 999999 !important;
+    }
+</style>
+
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
@@ -23,7 +43,10 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            @yield('content')
+            <div class="p-3 ">
+
+                @yield('content')
+            </div>
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">

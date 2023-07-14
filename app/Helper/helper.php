@@ -54,4 +54,13 @@ if (!function_exists('delete_document')) {
     }
 }
 
-?>
+if (!function_exists('active_sidebar')) {
+    function active_sidebar($url)
+    {
+        foreach ($url as $u) {
+            if (str_contains(request()->url(), $u)) {
+                return "active";
+            }
+        }
+    }
+}

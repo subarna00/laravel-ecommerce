@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('title');
             $table->text("slug")->nullable();
             $table->string("link")->nullable();
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->enum("status", ["active", "inactive"])->default("inactive");
             $table->timestamps();
         });

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->id();
+            $table->string('image');
+            $table->text('title');
+            $table->string("link")->nullable();
+            $table->enum("status", ["active", "inactive"])->default("inactive");
             $table->timestamps();
         });
     }

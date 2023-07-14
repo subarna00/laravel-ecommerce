@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,8 +35,29 @@ Route::middleware('auth')->group(function () {
 });
 
 // Backend Routes
-Route::group(["middleware" => "auth"], function () {
-Route::resource("/banner", BannerController::class);
-Route::post("/deleteSelectedBanner", [BannerController::class, "deleteSelected"])->name("deleteSelectedBanner");
+Route::group(["middleware" => "auth", "prefix" => "admin"], function () {
+    // banner
+    Route::resource("/banner", BannerController::class);
+    Route::post("/search-banner", [BannerController::class, "searchBanner"])->name("searchBanner");
+
+    // brand
+    Route::resource("/brands", BrandController::class);
+    Route::post("/search-brand", [BrandController::class, "searchBrand"])->name("searchBrand");
+
+    // partners
+    Route::resource("/partners", PartnerController::class);
+    Route::post("/search-partner", [PartnerController::class, "searchPartner"])->name("searchPartner");
+
+    // ads
+    Route::resource("/ads", AdController::class);
+    Route::post("/search-ads", [AdController::class, "searchAds"])->name("searchAds");
+
+    // category
+    Route::resource("/categories", CategoryController::class);
+    Route::post("/search-category", [CategoryController::class, "searchCategory"])->name("searchCategory");
+
+    // sub category
+    Route::resource("/sub-categories", SubCategoryController::class);
+    Route::post("/search-sub-categories", [SubCategoryController::class, "searchSubCategories"])->name("searchSubCategories");
 });
 require __DIR__ . '/auth.php';

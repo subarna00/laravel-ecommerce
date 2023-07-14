@@ -32,7 +32,8 @@
  <script src="{{ asset('btheme/dist/js/demo.js') }}"></script>
  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
  <script src="{{ asset('btheme/dist/js/pages/dashboard.js') }}"></script>
+ <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
  @include('notify::components.notify')
-  @notifyJs    
-@stack('js')  
-@yield('scripts')  
+ @notifyJs
+ @stack('js')
+ @yield('scripts')

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
+            $table->string("name");
+            $table->string("image");
+            $table->string("link")->nullable();
+            $table->enum("status", ["active", "inactive"]);
             $table->timestamps();
         });
     }
