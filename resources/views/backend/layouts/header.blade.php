@@ -23,3 +23,4 @@
 <link rel="stylesheet" href="{{ asset('btheme/plugins/daterangepicker/daterangepicker.css') }}">
 <!-- summernote -->
 <link rel="stylesheet" href="{{ asset('btheme/plugins/summernote/summernote-bs4.min.css') }}">
+@notifyCss

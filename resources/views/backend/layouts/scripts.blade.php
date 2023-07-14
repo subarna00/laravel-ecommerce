@@ -32,3 +32,7 @@
  <script src="{{ asset('btheme/dist/js/demo.js') }}"></script>
  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
  <script src="{{ asset('btheme/dist/js/pages/dashboard.js') }}"></script>
+ @include('notify::components.notify')
+  @notifyJs    
+@stack('js')  
+@yield('scripts')  
