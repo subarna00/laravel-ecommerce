@@ -4,20 +4,12 @@ use App\Models\Configuration;
 use Illuminate\Support\Facades\File;
 
 
-// function getConfiguration($key) {
-// 	$config = Configuration::where( 'configuration_key', '=', $key )->first();
-// 	if ( $config != null ) {
-// 		return $config->configuration_value;
-// 	}
-// 	return null;
-// }
-
 if (!function_exists('save_image')) {
-    function save_image($image)
+    function save_image($image, $path = "images")
     {
         if (file($image)) {
             $name = time() . '.' . $image->getClientOriginalName();
-            $image->move(public_path('images'), $name);
+            $image->move(public_path($path), $name);
             return $name;
         }
         return "";
@@ -62,5 +54,27 @@ if (!function_exists('active_sidebar')) {
                 return "active";
             }
         }
+    }
+}
+
+if (!function_exists('showImage')) {
+    function showImage($image = null)
+    {
+
+        if ($image !== null) {
+            $img = "images/" . $image;
+            if (File::exists(public_path($img))) {
+                return asset($img);
+            }
+        }
+
+        return "/frontend/default/images/default.jpeg";
+    }
+}
+if (!function_exists('getDiscountPrice')) {
+    function getDiscountPrice($price, $discount)
+    {
+        $discountPrice = $price - ($price * ($discount / 100));
+        return $discountPrice;
     }
 }

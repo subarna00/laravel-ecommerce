@@ -17,7 +17,10 @@ class PartnerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'link' => fake()->url(),
+            'status' => "active",
+            "image" => fake()->image('public/images', 200, '200', null, false)
         ];
     }
 }

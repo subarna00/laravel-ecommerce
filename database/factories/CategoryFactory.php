@@ -17,8 +17,9 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => "car",
-            "sllug" => "car",
+            'title' => fake()->unique(true)->randomElement(["Car", "Moter Cycle", "Bus", "Sports", "Books", "House", "Laptops", "Mobiles", "Bat", "Housing"]),
+            "slug" => fake()->unique(true)->randomElement(["Car", "Moter-Cycle", "Bus", "Sports", "Books", "House", "Laptops", "Mobiles", "Bat", "Housing"]),
+            "icon" => fake()->randomElement(['<i class="ri-git-repository-fill"></i>', '<i class="ri-bookmark-line"></i>', '<i class="ri-car-line"></i>', '<i class="ri-bear-smile-line"></i>', '<i class="ri-bell-line"></i>', '<i class="ri-caravan-line"></i>', '<i class="ri-mastercard-line"></i>', '<i class="ri-empathize-line"></i>']),
             'status' => "active",
             "image" => fake()->image('public/images', 200, '200', null, false)
         ];

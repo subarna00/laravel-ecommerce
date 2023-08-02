@@ -13,7 +13,7 @@
                         {{ method_field('PATCH') }}
                         @csrf
                         <div class="row">
-                            <div class="mb-3 col-md-12">
+                            <div class="mb-3 col-md-6">
                                 <img class="imagePreview" id="output00" alt=""
                                     src="{{ asset('images/' . $category->image) }}"
                                     @if ($category->image == '') style="height:120px;object-fit:fill;width:130px;display:none" @endif>
@@ -31,6 +31,17 @@
                                 <input type="text" name="title" class="form-control"
                                     value="{{ old('title') ?? $category->title }}" placeholder="title" required>
                                 @error('title')
+                                    <div class="text-red">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label">Icon</label>
+                                <p>Get icons from <a href="https://remixicon.com/" class="text-primary">Remix Icon</a></p>
+                                <input type="text" name="icon" class="form-control"
+                                    value="{{ old('icon') ?? $category->icon }}" placeholder="icon" required>
+                                @error('icon')
                                     <div class="text-red">
                                         {{ $message }}
                                     </div>

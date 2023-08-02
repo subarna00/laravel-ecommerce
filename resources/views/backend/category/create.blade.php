@@ -10,7 +10,7 @@
                     <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="mb-3 col-md-12">
+                            <div class="mb-3 col-md-6">
                                 <img class="imagePreview" id="output00" alt=""
                                     style="height:120px;object-fit:fill;width:130px;display:none">
                                 <label class="form-label">Image</label>
@@ -27,6 +27,17 @@
                                 <input type="text" name="title" class="form-control" value="{{ old('title') }}"
                                     placeholder="title" required>
                                 @error('title')
+                                    <div class="text-red">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label">Icon</label>
+                                <p>Get icons from <a href="https://remixicon.com/" class="text-primary">Remix Icon</a></p>
+                                <input type="text" name="icon" class="form-control" value="{{ old('icon') }}"
+                                    placeholder="icon" required>
+                                @error('icon')
                                     <div class="text-red">
                                         {{ $message }}
                                     </div>

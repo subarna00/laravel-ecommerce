@@ -35,6 +35,8 @@ class CategoryController extends Controller
             'image' => 'required|mimes:png,jpg,jpeg,wep,gif',
             'title' => 'required',
             'status' => 'required',
+            'icon' => 'sometimes',
+
         ]);
         if (isset($request->image)) {
             $data["image"] = save_image($request->image);
@@ -71,6 +73,7 @@ class CategoryController extends Controller
             'image' => 'sometimes|mimes:png,jpg,jpeg,wep,gif',
             'title' => 'required',
             'status' => 'required',
+            'icon' => 'sometimes',
         ]);
         try {
             $find = Category::find($id);
