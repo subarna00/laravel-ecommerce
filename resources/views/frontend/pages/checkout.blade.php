@@ -10,6 +10,7 @@
                             @if ($errors->any())
                                 {!! implode('', $errors->all('<span class="text text-danger" style="color: red">:message</span>')) !!}
                             @endif
+                            <img src="{{ asset("images/".$siteSetting->qr) }}" alt="" style="margin-top:-40px;margin-bottom:20px">
                             <form action="{{ route('addOrder') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <p style="margin-bottom: 0px">
@@ -18,7 +19,7 @@
                                 <p>
                                     <label
                                         style="    font-weight: 400;
-                                    font-size: 12px;">Scan
+                                    font-size: 14px;">Scan
                                         and pay through the QR code and add the receipt
                                         here.</label>
                                     <input type="file" name="receipt" autocomplete="off" required>

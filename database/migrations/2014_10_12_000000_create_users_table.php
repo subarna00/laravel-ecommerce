@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('image')->nullable();
-            $table->enum("type", ["admin", "user"])->default("user");
+            $table->enum("type", ["admin", "user","sub_admin"])->default("user");
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

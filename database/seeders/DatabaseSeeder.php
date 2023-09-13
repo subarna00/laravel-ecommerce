@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
             "name" => "My Ecommerce",
             "logo" => fake()->image('public/images', 200, '200', null, false),
             "favicon" => fake()->image('public/images', 200, '200', null, false),
+            "qr" => fake()->image('public/images', 200, '200', null, false),
+            "digital_s" => fake()->image('public/images', 200, '200', null, false),
             "email" => "myecommerce@myecommerce.com",
             "number" => "+977 9812345678",
             "address" => "My Address",
@@ -40,6 +42,7 @@ class DatabaseSeeder extends Seeder
             "youtube" => "https://www.youtube.com",
             "instagram" => "https://www.instagram.com",
             "tiktok" => "https://www.tiktok.com",
+            "bill_text"=> fake()->sentence(10),
         ]);
         User::factory()->create([
             'name' => 'Subarna Uprety',

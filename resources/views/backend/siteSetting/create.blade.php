@@ -36,13 +36,49 @@
                                 @enderror
                             </div>
                             <div class="mb-3 col-md-6">
-                                <img class="imagePreview" id="output00" alt=""
+                                <img class="imagePreview" id="output01" alt=""
                                     src="{{ asset('images/' . $siteSetting->favicon) }}"
                                     style="height:120px;object-fit:fill;width:130px;">
                                 <label class="form-label">Fav Icon</label>
-                                <input type="file" name="logo" onchange="loadFile9(event)" class="form-control"
+                                <input type="file" name="logo" onchange="loadFile10(event)" class="form-control"
                                     placeholder="logo">
                                 @error('logo')
+                                    <div class="text-red">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <img class="imagePreview" id="output02" alt=""
+                                    src="{{ asset('images/' . $siteSetting->qr) }}"
+                                    style="height:120px;object-fit:fill;width:130px;">
+                                <label class="form-label">QR Code</label>
+                                <input type="file" name="qr" onchange="loadFile11(event)" class="form-control"
+                                    placeholder="qr">
+                                @error('qr')
+                                    <div class="text-red">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <img class="imagePreview" id="output03" alt=""
+                                    src="{{ asset('images/' . $siteSetting->digital_s) }}"
+                                    style="height:120px;object-fit:fill;width:130px;">
+                                <label class="form-label">Digital Signature</label>
+                                <input type="file" name="digital_s" onchange="loadFile12(event)" class="form-control"
+                                    placeholder="digital_s">
+                                @error('digital_s')
+                                    <div class="text-red">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label">Bill Text</label>
+                                <input type="text" name="bill_text" class="form-control"
+                                    value="{{ old('bill_text') ?? $siteSetting->bill_text }}" placeholder="Text below bill" >
+                                @error('bill_text')
                                     <div class="text-red">
                                         {{ $message }}
                                     </div>
@@ -155,6 +191,21 @@
             let image77 = document.getElementById('output00');
             image77.src = URL.createObjectURL(event.target.files[0]);
             image77.style.display = "block"
+        };
+        var loadFile10 = function(event) {
+            let image78 = document.getElementById('output01');
+            image78.src = URL.createObjectURL(event.target.files[0]);
+            image78.style.display = "block"
+        };
+        var loadFile11 = function(event) {
+            let image9 = document.getElementById('output02');
+            image9.src = URL.createObjectURL(event.target.files[0]);
+            image9.style.display = "block"
+        };
+        var loadFile12 = function(event) {
+            let image89 = document.getElementById('output03');
+            image89.src = URL.createObjectURL(event.target.files[0]);
+            image89.style.display = "block"
         };
     </script>
 @endsection

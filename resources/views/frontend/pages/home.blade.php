@@ -1,4 +1,6 @@
 @extends('frontend.layouts.master')
+@section('title')
+@endsection
 @section('content')
     @include('frontend.template_parts.banner')
 

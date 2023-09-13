@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -23,9 +24,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+require __DIR__ . '/auth.php';
 
 Route::get('/', function () {
     return view('frontend.pages.home');
+});
+Route::get('/register', function () {
+    return redirect()->route("registerPage");
 });
 
 Route::get('/admin/dashboard', function () {
@@ -39,7 +44,18 @@ Route::middleware('auth')->group(function () {
 });
 
 // Backend Routes
-Route::group(["middleware" => "auth", "prefix" => "admin"], function () {
+Route::group(["middleware" => ["auth","admin"], "prefix" => "admin"], function () {
+    Route::get("/users",[AdminUserController::class,"index"])->name("userPage");
+    Route::get("/user-create",[AdminUserController::class,"create"])->name("adminUserCreate");
+    Route::post("/user-create",[AdminUserController::class,"store"])->name("userRegistrationAdmin");
+    Route::get("/user-update/{id}",[AdminUserController::class,"edit"])->name("userEditAdmin");
+    Route::post("/user-update/{id}",[AdminUserController::class,"update"])->name("userUpdateAdmin");
+    Route::post("/user-delete/{id}",[AdminUserController::class,"destroy"])->name("userDeleteAdmin");
+});
+
+
+Route::group(["middleware" => ["auth","subadmin"], "prefix" => "admin"], function () {
+
     // banner
     Route::resource("/banner", BannerController::class);
     Route::post("/search-banner", [BannerController::class, "searchBanner"])->name("searchBanner");
@@ -78,6 +94,8 @@ Route::group(["middleware" => "auth", "prefix" => "admin"], function () {
 
     // Site setting
     Route::resource("/site-setting", SiteSettingController::class);
+    Route::post("/update-order", [OrderController::class, "updateOrder"])->name("updateOrderAdmin");
+    Route::get("/download-order/{id}", [OrderController::class, "downloadBill"])->name("downloadBill");
 });
 
 // frontend routes
@@ -111,4 +129,3 @@ Route::controller(FrontendController::class)->group(function () {
     });
 });
 
-require __DIR__ . '/auth.php';

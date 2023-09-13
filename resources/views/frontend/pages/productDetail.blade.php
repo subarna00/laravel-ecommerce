@@ -1,4 +1,7 @@
 @extends('frontend.layouts.master')
+@section('title')
+    {{ $product->name }}
+@endsection
 @section('content')
     <div class="single-product">
         <div class="container">

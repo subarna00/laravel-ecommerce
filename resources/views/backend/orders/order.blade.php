@@ -28,114 +28,76 @@
                 </div>
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Product</th>
-                            <th scope="col">Billing Name</th>
-                            <th scope="col">Billing Number</th>
-                            <th scope="col">Status</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($orders as $key => $order)
-                            <tr>
-                                <th scope="row">{{ $order->id }}</th>
-                                <td>{{ $order->product->name }}</td>
-                                <td>{{ $order->bname }}</td>
-                                <td>{{ $order->bnumber }}</td>
-                                <td>
-                                    @if ($order->status == 'Canceled')
-                                        <span style="color: red">{{ $order->status }}</span>
-                                    @elseif($order->status == 'Delivered')
-                                        <span style="color: green">{{ $order->status }}</span>
-                                    @else
-                                        {{ $order->status }}
-                                    @endif
-                                </td>
-                                <td><button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
-                                        data-target="#exampleModal{{ $order->id }}">
-                                        View Detail
-                                    </button>
+            <div class="bg-white p-3 mt-2"
+                style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
 
-
-                                </td>
-                            </tr>
-                            <div class="modal fade" id="exampleModal{{ $order->id }}" tabindex="-1"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Order Detail
-                                            </h1>
-                                            <button type="button" class="btn-close" data-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <img src="{{ asset('receipts/' . $order->receipt) }}" alt="">
-                                            <a href="{{ asset('receipts/' . $order->receipt) }}"
-                                                class="btn btn-sm btn-secondary my-2" download>Download Receipt</a>
-                                            <p>Product: {{ $order->product->name }}</p>
-                                            <p>Name: {{ $order->bname }}</p>
-                                            <p>Email: {{ $order->bemail }}</p>
-                                            <p>Number: {{ $order->bnumber }}</p>
-                                            <p>Price: Rs. {{ $order->price }}</p>
-                                            <p>Quantity: {{ $order->quantity }}</p>
-                                            <p>Total: Rs. {{ $order->total }}</p>
-                                            <p>Status: @if ($order->status == 'Canceled')
-                                                    <span style="color: red !important">{{ $order->status }}
-                                                    </span>
-                                                @else
-                                                    {{ $order->status }}
-                                                @endif
-                                            </p>
-                                            <p>Note: {{ $order->note }}</p>
-                                        </div>
-                                        <div class="modal-footer d-flex w-100 justify-content-between">
-                                            <form action="{{ route('updateOrder') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                                {{-- <input type="hidden" name="status" value="Canceled"> --}}
-                                                <select name="status" class="form-control mb-2">
-                                                    <option value="" selected disabled>Update Status</option>
-                                                    <option value="Placed"
-                                                        @if ($order->status == 'Placed') selected @endif>Placed</option>
-                                                    <option value="Processing"
-                                                        @if ($order->status == 'Processing') selected @endif>Processing
-                                                    </option>
-                                                    <option value="On the way"
-                                                        @if ($order->status == 'On the way') selected @endif>On the way
-                                                    </option>
-                                                    <option value="Delivered"
-                                                        @if ($order->status == 'Delivered') selected @endif>Delivered</option>
-                                                    <option value="Canceled"
-                                                        @if ($order->status == 'Canceled') selected @endif>Canceled</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-primary">Update
-                                                    Order</button>
-
-                                            </form>
-
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-
-                                        </div>
+                <div class="accordion  mb-2" id="accordionExample">
+                    @foreach ($orders as $order)
+                        <div class="accordion-item mb-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+                            <h2 class="accordion-header" id="flush-headingOne{{ $order->id }}">
+                                <div class="accordion-button w-100 p-4 d-flex align-items-center justify-content-between "
+                                    type="button" data-toggle="collapse" data-target="#collapseOne{{ $order->id }}"
+                                    aria-expanded="false" aria-controls="collapseOne{{ $order->id }}"
+                                    style="text-align: left">
+                                    <div class="d-flex">
+                                        <div class="bg-danger text-white px-2 py-1 mx-2 " style="border-radius: 5px">
+                                            {{ $order->id }}</div> - <div class="bg-secondary text-white px-2 py-1 mx-2 "
+                                            style="border-radius: 5px">{{ $order->bname }}</div>
+                                        <div class="bg-secondary text-white px-2 py-1 mx-2 " style="border-radius: 5px">
+                                            {{ $order->bnumber }}</div>
+                                        <div class="bg-secondary text-white px-2 py-1 mx-2 " style="border-radius: 5px">
+                                            {{ $order->baddress }}</div>
                                     </div>
+                                    <div class="d-flex">
+                                        <form class="d-flex" action="{{ route('updateOrderAdmin') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" value="{{ $order->id }}" name="order_id">
+                                            <select name="status" id="" class="form-control">
+                                                <option value="Placed" @if ($order->status == 'Placed') selected @endif>
+                                                    Placed</option>
+                                                <option value="Processing"
+                                                    @if ($order->status == 'Processing') selected @endif>
+                                                    Processing</option>
+                                                <option value="On the way"
+                                                    @if ($order->status == 'On the way') selected @endif>
+                                                    On the way</option>
+                                                <option value="Delivered" @if ($order->status == 'Delivered') selected @endif>
+                                                    Delivered</option>
+                                                <option value="Canceled" @if ($order->status == 'Canceled') selected @endif>
+                                                    Canceled</option>
+                                            </select>
+                                            <button class="btn btn-sm btn-success mx-1">Update</button>
+                                        </form>
+                                        <a href="{{ route('downloadBill', $order->id) }}"
+                                            class="btn btn-sm btn-dark ml-2">Print Bill</a>
+                                    </div>
+
                                 </div>
+                            </h2>
+                            <div id="collapseOne{{ $order->id }}" class="accordion-collapse collapse "
+                                aria-labelledby="headingOne{{ $order->id }}" data-parent="#accordionExample">
+                                <div class="accordion-body px-4 pb-3">
+                                    {{ $order->note }}
+                                    @foreach ($order->orderProducts ?? [] as $op)
+                                        <div class="my-2 p-2 d-flex align-items-center justify-content-between"
+                                            style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+
+                                            <img src="{{ showImage($op->product->images[0]['image'] ?? null) }} "
+                                                alt="" height="" style="height: 50px">
+
+                                            <div class="">{{ $op->product->name }}</div>
+                                            <div class="">Qty: {{ $op->quantity }}</div>
+                                            <div class="">Price: Rs. {{ $op->price }}</div>
+                                            <div class="">Total: Rs. {{ $op->total }}</div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
                             </div>
-                        @endforeach
-
-
-                    </tbody>
-                </table>
-                <hr>
-                <div class="my-3 mx-2 d-flex justify-content-end">
-
-                    {{ $orders->links('pagination::bootstrap-4') }}
+                        </div>
+                    @endforeach
                 </div>
+
             </div>
             <!-- /.card-body -->
         </div>

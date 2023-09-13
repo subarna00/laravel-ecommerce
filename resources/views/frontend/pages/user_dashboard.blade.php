@@ -39,102 +39,51 @@
                 role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                 <div class="bg-white p-3 mt-2"
                     style="border-radius:10px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Billing Name</th>
-                                <th scope="col">Billing Number</th>
-                                <th scope="col">Status</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (count($orders) > 0)
-                                @foreach ($orders as $order)
-                                    <tr>
-                                        <th scope="row">{{ $order->id }}</th>
-                                        <td>{{ $order->product->name }}</td>
-                                        <td>{{ $order->bname }}</td>
-                                        <td>{{ $order->bnumber }}</td>
-                                        <td>
-                                            @if ($order->status == 'Canceled')
-                                                <span style="color: red">{{ $order->status }}</span>
-                                            @elseif($order->status == 'Delivered')
-                                                <span style="color: green">{{ $order->status }}</span>
-                                            @else
-                                                {{ $order->status }}
-                                            @endif
-                                        </td>
-                                        <td><button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal{{ $order->id }}">
-                                                View Detail
-                                            </button>
 
+                    <div class="accordion accordion-flush mb-2" id="accordionExample">
+                        @foreach ($orders as $order)
+                            <div class="accordion-item mb-2">
+                                <h2 class="accordion-header" id="flush-headingOne{{ $order->id }}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne{{ $order->id }}" aria-expanded="false"
+                                        aria-controls="collapseOne{{ $order->id }}">
+                                        <span class="bg-danger text-white px-2 py-1 mx-2 "
+                                            style="border-radius: 5px">{{ $order->id }}</span> - <span
+                                            class="bg-secondary text-white px-2 py-1 mx-2 "
+                                            style="border-radius: 5px">{{ $order->bname }}</span>
+                                        <span class="bg-secondary text-white px-2 py-1 mx-2 "
+                                            style="border-radius: 5px">{{ $order->bnumber }}</span>
+                                        <span class="bg-secondary text-white px-2 py-1 mx-2 "
+                                            style="border-radius: 5px">{{ $order->baddress }}</span>
+                                        <span class="bg-dark text-white px-2 py-1 mx-2 "
+                                            style="border-radius: 5px">{{ $order->status }}</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseOne{{ $order->id }}" class="accordion-collapse collapse "
+                                    aria-labelledby="headingOne{{ $order->id }}"
+                                    data-bs-parent="#accordionExample{{ $order->id }}">
+                                    <div class="accordion-body">
+                                        {{ $order->note }}
+                                        @foreach ($order->orderProducts ?? [] as $op)
+                                            <div class="my-2 p-2 d-flex align-items-center justify-content-between"
+                                                style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
 
-                                        </td>
-                                    </tr>
-                                    <div class="modal fade" id="exampleModal{{ $order->id }}" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Order Detail
-                                                    </h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Product: {{ $order->product->name }}</p>
-                                                    <p>Name: {{ $order->bname }}</p>
-                                                    <p>Email: {{ $order->bemail }}</p>
-                                                    <p>Number: {{ $order->bnumber }}</p>
-                                                    <p>Price: Rs. {{ $order->price }}</p>
-                                                    <p>Quantity: {{ $order->quantity }}</p>
-                                                    <p>Total: Rs. {{ $order->total }}</p>
-                                                    <p>Status: @if ($order->status == 'Canceled')
-                                                            <span style="color: red">{{ $order->status }}</span>
-                                                        @elseif($order->status == 'Delivered')
-                                                            <span style="color: green">{{ $order->status }}</span>
-                                                        @else
-                                                            {{ $order->status }}
-                                                        @endif
-                                                    </p>
-                                                    <p>Note: {{ $order->note }}</p>
-                                                </div>
-                                                <div class="modal-footer d-flex justify-content-between">
-                                                    <form action="{{ route('updateOrder') }}" method="POST"
-                                                        class="mr-auto">
-                                                        @csrf
-                                                        <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                                        <input type="hidden" name="status" value="Canceled">
-                                                        @if ($order->status !== 'Canceled' && $order->status !== 'Delivered')
-                                                            <button type="submit" class="btn btn-danger mr-auto"
-                                                                style="margin-right: auto">Cancel
-                                                                Order</button>
-                                                        @endif
-                                                    </form>
-                                                    <button type="button" class="btn btn-secondary "
-                                                        data-bs-dismiss="modal">Close</button>
+                                                <img src="{{ showImage($op->product->images[0]['image'] ?? null) }} "
+                                                    alt="" height="60">
 
-                                                </div>
+                                                <div class="">{{ $op->product->name }}</div>
+                                                <div class="">Qty: {{ $op->quantity }}</div>
+                                                <div class="">Price: Rs. {{ $op->price }}</div>
+                                                <div class="">Total: Rs. {{ $op->total }}</div>
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <th scope="row"> No Orders Yet.</th>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
                 </div>
 
             </div>

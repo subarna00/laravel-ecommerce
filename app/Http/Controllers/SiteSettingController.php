@@ -57,6 +57,8 @@ class SiteSettingController extends Controller
         $data =  $request->validate([
             "name" => "sometimes",
             "logo" => "sometimes",
+            "qr" => "sometimes",
+            "digital_s" => "sometimes",
             "favicon" => "sometimes",
             "email" => "sometimes|email",
             "number" => "sometimes|string",
@@ -66,6 +68,8 @@ class SiteSettingController extends Controller
             "instagram" => "sometimes",
             "youtube" => "sometimes",
             "tiktok" => "sometimes",
+            "bill_text" => "sometimes",
+
         ]);
         $setting = SiteSetting::find($id);
         $setting->name = $request->name;
@@ -75,7 +79,14 @@ class SiteSettingController extends Controller
         if ($request->hasFile("favicon")) {
             $setting->favicon = save_image($request->favicon);
         }
+        if ($request->hasFile("digital_s")) {
+            $setting->digital_s = save_image($request->digital_s);
+        }
+        if ($request->hasFile("qr")) {
+            $setting->qr = save_image($request->qr);
+        }
         $setting->email = $request->email;
+        $setting->bill_text = $request->bill_text;
         $setting->address = $request->address;
         $setting->number = $request->number;
         $setting->map = $request->map;

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\ContactForm;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\SubCategory;
 use App\Models\User;
@@ -194,6 +195,16 @@ class FrontendController extends Controller
             $user = auth()->user();
             $cartItems = Cart::where("user_id", $user->id)->get();
             if (count($cartItems) > 0) {
+                $order =    Order::create([
+                    "user_id" => $user->id,
+                    "bname" => $data["bname"],
+                    "baddress" => $data["baddress"],
+                    "bemail" => $data["bemail"],
+                    "bnumber" => $data["bnumber"],
+                    "note" => $data["note"],
+                    "status" => "Placed",
+                    "receipt" =>  save_image($data["receipt"], "receipts"),
+                ]);
                 foreach ($cartItems as $key => $cart) {
                     $price = $cart->product->price;
                     if ($cart->product->offer) {
@@ -201,19 +212,12 @@ class FrontendController extends Controller
                     } else if ($cart->product->discount) {
                         $price = getDiscountPrice($cart->product->price, $cart->product->discount);
                     }
-                    Order::create([
-                        "user_id" => $user->id,
+                    OrderProduct::create([
+                        "order_id" => $order->id,
                         "product_id" => $cart->product_id,
-                        "bname" => $data["bname"],
-                        "baddress" => $data["baddress"],
-                        "bemail" => $data["bemail"],
-                        "bnumber" => $data["bnumber"],
-                        "note" => $data["note"],
                         "price" =>  $price,
                         "quantity" => $cart->quantity,
                         "total" => $price * $cart->quantity,
-                        "status" => "Placed",
-                        "receipt" =>  save_image($data["receipt"], "receipts"),
                     ]);
                     $cart->delete();
                 }

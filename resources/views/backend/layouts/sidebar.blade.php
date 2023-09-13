@@ -36,6 +36,17 @@
                     </a>
 
                 </li>
+                @if(auth()->user()->type == "admin")
+                <li class="nav-item">
+                    <a href="{{ route('userPage') }}"
+                        class="nav-link {{ active_sidebar([route('userPage')]) }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Users
+                        </p>
+                    </a>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('banner.index') }}"
                         class="nav-link {{ active_sidebar([route('banner.index')]) }}">

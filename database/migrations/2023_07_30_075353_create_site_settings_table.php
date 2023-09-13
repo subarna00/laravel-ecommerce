@@ -16,6 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->string("name")->nullable();
             $table->string("logo")->nullable();
+            $table->string("qr")->nullable();
+            $table->string("digital_s")->nullable();
+            $table->string("bill_text")->nullable();
             $table->string("favicon")->nullable();
             $table->string("email")->nullable();
             $table->string("number")->nullable();

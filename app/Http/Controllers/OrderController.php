@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ContactForm;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -33,5 +34,30 @@ class OrderController extends Controller
 
             ->latest()->paginate(20);
         return view("backend.orders.order", compact("orders"));
+    }
+    public function updateOrder(Request $request)
+    {
+        $data = $request->validate([
+            "order_id" => "required",
+            "status" => "required"
+        ]);
+        $order = Order::find($data["order_id"]);
+        if (auth()->user()->type == "admin") {
+            $order->status = $data["status"];
+            $order->update();
+            return redirect()->back()->with("order", "Your order is canceled.");
+        }
+        return abort(403);
+    }
+    public function downloadBill($id)
+    {
+        try {
+            $data["orders"] = Order::find($id);
+            $pdf = Pdf::loadView('backend.pdf.bill.OrderBill', $data);
+            return $pdf->download('orderBill.pdf');
+        } catch (\Throwable $th) {
+           return $th->getMessage();
+        }
+
     }
 }

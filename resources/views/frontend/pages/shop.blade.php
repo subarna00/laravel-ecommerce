@@ -1,4 +1,7 @@
 @extends('frontend.layouts.master')
+@section('title')
+    Shop
+@endsection
 @section('content')
     <div class="single-category">
         <div class="container">
@@ -101,8 +104,8 @@
                                             </div>
                                             <div class="hoverable">
                                                 <ul>
-                                                    <li class="active"><a href="#"><i class="ri-heart-line"></i></a>
-                                                    </li>
+                                                    {{-- <li class="active"><a href="#"><i class="ri-heart-line"></i></a>
+                                                    </li> --}}
                                                     <li><a href="{{ route('productDetailPage', $product->slug) }}"><i
                                                                 class="ri-eye-line"></i></a></li>
                                                 </ul>
